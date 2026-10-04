@@ -1,0 +1,428 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#2DB2B2">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Lunches Dunches</title>
+<link rel="manifest" href="./manifest.json">
+<style>
+:root{--teal:#2DB2B2;--coral:#FF9F68;--purple:#7C6CFA;--yellow:#FFD166;--sage:#E9F4EC;--sage2:#DCEAE0;--ink:#17323b;--muted:#68777d;--white:#fff;--line:#d8e3e5;--red:#d84b4b;--green:#2f9e65;--shadow:0 8px 24px rgba(20,55,65,.10)}
+*{box-sizing:border-box}html,body{margin:0;background:var(--sage2);color:var(--ink);font-family:Poppins,Arial,sans-serif}body{padding-bottom:82px}
+button,input,select,textarea{font:inherit}button{cursor:pointer}
+.app{max-width:900px;margin:auto}.top{position:sticky;top:0;z-index:30;background:var(--sage);border-bottom:3px solid var(--teal);padding:12px 14px;box-shadow:0 3px 12px #17323b16}.toprow{display:flex;align-items:center;gap:10px}.brand{font-size:23px;font-weight:900;flex:1}.tag{font-size:12px;color:var(--muted);margin-top:2px}.iconbtn{width:44px;height:44px;border:0;border-radius:13px;background:#fff;box-shadow:var(--shadow);font-size:22px}
+main{padding:14px}.page{display:none}.page.active{display:block}.card{background:#fff;border-radius:20px;padding:16px;margin-bottom:14px;box-shadow:var(--shadow)}h1{font-size:27px;margin:0 0 12px}h2{font-size:20px;margin:0 0 10px}.muted{color:var(--muted)}.small{font-size:12px}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.btn{border:0;border-radius:14px;min-height:48px;padding:11px 14px;font-weight:800;background:var(--teal);color:#fff}.btn.coral{background:var(--coral)}.btn.purple{background:var(--purple)}.btn.yellow{background:var(--yellow);color:var(--ink)}.btn.ghost{background:#fff;color:var(--ink);border:2px solid var(--line)}.btn.danger{background:var(--red)}.btn.full{width:100%}.btn:active{transform:scale(.98)}
+.hero{background:linear-gradient(135deg,var(--teal),#65d0c5);color:#fff;border-radius:24px;padding:20px;box-shadow:var(--shadow);margin-bottom:14px}.hero h1{font-size:31px}.hero p{margin:7px 0 16px}.chips{display:flex;gap:8px;overflow:auto;padding:2px 0 8px;scrollbar-width:none}.chips::-webkit-scrollbar{display:none}.chip{flex:0 0 auto;border:0;border-radius:999px;padding:9px 14px;background:#fff;color:var(--ink);font-weight:800}.chip.active{background:var(--purple);color:#fff}
+.menu-card{display:flex;gap:12px;align-items:stretch}.menu-thumb{width:78px;height:78px;flex:0 0 78px;border-radius:14px;object-fit:cover;background:var(--sage2)}.menu-info{flex:1;min-width:0}.menu-info h3{margin:0 0 3px;font-size:17px}.menu-details{font-size:12px;color:var(--muted);margin:3px 0 8px}.stars{color:#f5b400}.actions{display:flex;gap:7px}.actions .btn{min-height:38px;padding:7px 10px;font-size:12px}
+.form label{display:block;font-size:12px;font-weight:800;margin:0 0 5px}.form input,.form select,.form textarea{width:100%;padding:12px;border:2px solid var(--line);border-radius:12px;background:#fff;margin-bottom:10px}.form textarea{min-height:90px;resize:vertical}
+.kpi{background:var(--sage);border-radius:15px;padding:12px;text-align:center}.kpi b{display:block;font-size:24px}.kpi span{font-size:11px;color:var(--muted)}
+.dayrow{display:flex;gap:7px;overflow:auto}.day{min-width:74px;border:2px solid var(--line);background:#fff;border-radius:14px;padding:9px 6px;text-align:center}.day.active{border-color:var(--purple);background:#f0eeff}.day b{display:block}.planned{margin-top:9px;border:2px dashed #b7c9cc;border-radius:14px;padding:10px;min-height:58px}
+.cartrow{display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}.qty{display:flex;align-items:center;gap:7px}.qty button{width:34px;height:34px;border:0;border-radius:10px;background:var(--sage2);font-weight:900}
+.bottom{position:fixed;bottom:0;left:0;right:0;z-index:40;background:#fff;border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(6,1fr);padding:6px max(6px,env(safe-area-inset-left)) max(6px,env(safe-area-inset-bottom))}.bottom button{border:0;background:#fff;color:var(--muted);font-size:10px;padding:5px 2px}.bottom button b{display:block;font-size:20px;line-height:20px}.bottom button.active{color:var(--purple);font-weight:900}
+.badge{display:inline-block;padding:4px 8px;border-radius:999px;background:var(--yellow);font-size:11px;font-weight:900}.notice{background:#fff8df;border-left:4px solid var(--yellow);padding:10px;border-radius:10px;font-size:12px}
+.section-head{display:flex;align-items:center;justify-content:space-between;gap:10px}.hidden{display:none!important}.divider{height:1px;background:var(--line);margin:12px 0}
+.tablewrap{overflow:auto}.table{width:100%;border-collapse:collapse;font-size:12px}.table th,.table td{padding:8px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}.table th{background:var(--sage);position:sticky;top:0}
+.drag-list{display:flex;flex-direction:column;gap:8px}.drag-item{display:flex;align-items:center;gap:9px;background:#fff;border:2px solid var(--line);border-radius:14px;padding:10px;touch-action:none}.drag-item.dragging{opacity:.45;border-color:var(--purple)}.handle{font-size:20px;color:#89999e;cursor:grab}.drag-main{flex:1}.sortbar{display:flex;gap:7px;overflow:auto;margin-bottom:10px}.sortbar select,.sortbar input{min-height:42px;border:2px solid var(--line);border-radius:11px;padding:8px;background:#fff}
+.buddy{position:fixed;right:15px;bottom:91px;z-index:45}.buddy-fab{width:58px;height:58px;border:0;border-radius:50%;background:var(--purple);color:#fff;font-size:25px;box-shadow:0 8px 22px #7c6cfa55}.buddy-panel{position:fixed;right:10px;bottom:158px;width:min(380px,calc(100vw - 20px));max-height:70vh;background:#fff;border-radius:20px;box-shadow:0 15px 40px #17323b35;display:flex;flex-direction:column;overflow:hidden}.buddy-head{background:var(--purple);color:#fff;padding:13px;display:flex;align-items:center}.buddy-head b{flex:1}.buddy-messages{padding:12px;overflow:auto;flex:1}.msg{padding:9px 11px;border-radius:13px;margin-bottom:8px;max-width:90%;font-size:13px;white-space:pre-wrap}.msg.bot{background:#f0eeff}.msg.me{background:var(--sage);margin-left:auto}.buddy-input{display:flex;gap:6px;padding:9px;border-top:1px solid var(--line)}.buddy-input input{flex:1;border:2px solid var(--line);border-radius:12px;padding:9px}
+@media(max-width:430px){main{padding:10px}.grid2{grid-template-columns:1fr}.hero h1{font-size:27px}.brand{font-size:20px}.menu-thumb{width:68px;height:68px;flex-basis:68px}.bottom button b{font-size:18px}}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="top">
+  <div class="toprow">
+    <button class="iconbtn" id="menuBtn">☰</button>
+    <div><div class="brand">Lunches Dunches</div><div class="tag">Fresh, fun & balanced lunches for JK–Grade 12</div></div>
+    <button class="iconbtn" id="cartBtn">🛒</button>
+  </div>
+</header>
+
+<main>
+<section id="home" class="page active">
+  <div class="hero">
+    <h1>Lunch made easy. 😊</h1>
+    <p>Plan nutritious lunches, keep macros simple, and pick them up with a QR code at your vending slot.</p>
+    <button class="btn yellow" onclick="showPage('planner')">Build this week's lunches</button>
+  </div>
+  <div class="grid3">
+    <div class="kpi"><b id="homeMeals">0</b><span>meals planned</span></div>
+    <div class="kpi"><b id="homeCart">0</b><span>in cart</span></div>
+    <div class="kpi"><b id="homeProtein">0g</b><span>planned protein</span></div>
+  </div>
+  <div class="card">
+    <div class="section-head"><h2>Quick picks</h2><button class="btn ghost" onclick="showPage('menu')">See menu</button></div>
+    <div id="quickMenu"></div>
+  </div>
+  <div class="card">
+    <h2>How it works</h2>
+    <div class="grid2">
+      <div>1️⃣ Pick meals<br><span class="small muted">Choose 1–5 lunches.</span></div>
+      <div>2️⃣ Plan ahead<br><span class="small muted">Order at least 7 days ahead.</span></div>
+      <div>3️⃣ Scan QR<br><span class="small muted">Use your phone at the vending slot.</span></div>
+      <div>4️⃣ Return bento<br><span class="small muted">Deposit back = less waste.</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="menu" class="page">
+  <div class="section-head"><h1>Menu</h1><button class="btn purple" onclick="openBuddy('Help me choose a lunch')">🤖 Chef Buddy</button></div>
+  <div class="chips" id="categoryChips"></div>
+  <div id="menuList"></div>
+</section>
+
+<section id="planner" class="page">
+  <div class="section-head"><h1>Weekly Planner</h1><span class="badge">7-day lead time</span></div>
+  <div class="card">
+    <div class="dayrow" id="dayRow"></div>
+    <div id="plannedDay"></div>
+  </div>
+  <div class="card">
+    <h2>Nutrition snapshot</h2>
+    <div class="grid3">
+      <div class="kpi"><b id="planCal">0</b><span>kcal</span></div>
+      <div class="kpi"><b id="planProtein">0g</b><span>protein</span></div>
+      <div class="kpi"><b id="planFiber">0g</b><span>fiber</span></div>
+    </div>
+  </div>
+  <div class="card"><button class="btn full" onclick="showPage('menu')">Add a meal to this day</button></div>
+</section>
+
+<section id="cart" class="page">
+  <div class="section-head"><h1>Cart</h1><button class="btn ghost" onclick="clearCart()">Clear</button></div>
+  <div id="cartList"></div>
+  <div class="card">
+    <div class="section-head"><b>Subtotal</b><strong id="cartTotal">$0.00</strong></div>
+    <div class="small muted" id="discountText">Choose 3 lunches for 10% off or 5 for 20% off.</div>
+    <button class="btn coral full" style="margin-top:10px" onclick="checkout()">Continue to checkout</button>
+  </div>
+</section>
+
+<section id="orders" class="page">
+  <h1>Orders & QR Pickup</h1>
+  <div id="ordersList"></div>
+</section>
+
+<section id="profile" class="page">
+  <h1>Family Profile</h1>
+  <div class="card form">
+    <label>Parent name<input id="pName"></label>
+    <label>Child name<input id="cName"></label>
+    <label>School<input id="school"></label>
+    <label>Grade<select id="grade"><option>JK</option><option>SK</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option><option>11</option><option>12</option></select></label>
+    <label>Age (optional)<input id="age" type="number"></label>
+    <label>Height cm (optional)<input id="height" type="number"></label>
+    <label>Weight kg (optional)<input id="weight" type="number"></label>
+    <label>Allergies / restrictions<textarea id="allergies" placeholder="e.g. peanuts, dairy, vegetarian"></textarea></label>
+    <button class="btn full" onclick="saveProfile()">Save profile</button>
+  </div>
+</section>
+
+<section id="kitchen" class="page">
+  <div class="section-head"><h1>Professional Kitchen</h1><span class="badge">Chef tools</span></div>
+  <div class="chips">
+    <button class="chip active" onclick="kitchenTab('ingredients')">🥕 Ingredients</button>
+    <button class="chip" onclick="kitchenTab('recipes')">📖 Recipes</button>
+    <button class="chip" onclick="kitchenTab('inventory')">📋 Inventory</button>
+    <button class="chip" onclick="kitchenTab('invoice')">📸 Invoice</button>
+  </div>
+  <div id="kIngredients" class="card"></div>
+  <div id="kRecipes" class="card hidden"></div>
+  <div id="kInventory" class="card hidden"></div>
+  <div id="kInvoice" class="card hidden"></div>
+  <div class="card">
+    <h2>Backup & GitHub</h2>
+    <div class="grid2">
+      <button class="btn" onclick="exportBackup()">⬇ Export backup</button>
+      <button class="btn ghost" onclick="document.getElementById('backupFile').click()">⬆ Import backup</button>
+    </div>
+    <input id="backupFile" type="file" accept=".json" class="hidden">
+    <button class="btn purple full" style="margin-top:9px" onclick="openBuddy('Help me with my kitchen costing')">🤖 Ask Chef Buddy</button>
+  </div>
+</section>
+
+<section id="settings" class="page">
+  <h1>Settings</h1>
+  <div class="card form">
+    <label>Order lead time (days)<input id="leadDays" type="number" min="1" value="7"></label>
+    <button class="btn full" onclick="saveSettings()">Save settings</button>
+  </div>
+  <div class="card">
+    <h2>Data</h2>
+    <button class="btn danger full" onclick="deleteAllData()">Delete all app data</button>
+  </div>
+</section>
+</main>
+
+<nav class="bottom">
+  <button data-page="home" class="active"><b>🏠</b>Home</button>
+  <button data-page="menu"><b>🍱</b>Menu</button>
+  <button data-page="planner"><b>📅</b>Planner</button>
+  <button data-page="orders"><b>📦</b>Orders</button>
+  <button data-page="profile"><b>👨‍👩‍👧</b>Profile</button>
+  <button data-page="kitchen"><b>👨‍🍳</b>Kitchen</button>
+</nav>
+
+<div class="buddy">
+  <button class="buddy-fab" id="buddyFab">🤖</button>
+  <div class="buddy-panel hidden" id="buddyPanel">
+    <div class="buddy-head"><b>Chef Buddy</b><button class="iconbtn" id="buddyClose">✕</button></div>
+    <div class="buddy-messages" id="buddyMessages"></div>
+    <div class="buddy-input"><input id="buddyInput" placeholder="Ask Chef Buddy..."><button class="btn purple" id="buddySend">Send</button></div>
+  </div>
+</div>
+
+<script>
+'use strict';
+
+const DAYS=['Mon','Tue','Wed','Thu','Fri'];
+const CATS=['All','Salads','Bowls','Sandwiches & Wraps','Smoothies & Drinks','Snacks'];
+const MENU=[
+{id:'greek',name:'Greek Salad',cat:'Salads',price:8.95,kcal:320,p:18,c:22,f:14,fiber:6,rating:4,img:'images/greek-salad.jpg',desc:'Cucumber, tomato, feta, olives and a bright herb dressing.'},
+{id:'chicken-bowl',name:'Chicken Teriyaki Bowl',cat:'Bowls',price:9.95,kcal:460,p:31,c:51,f:13,fiber:5,rating:5,img:'images/chicken-teriyaki-bowl.jpg',desc:'Chicken, rice, broccoli and a lighter teriyaki glaze.'},
+{id:'turkey-wrap',name:'Turkey Crunch Wrap',cat:'Sandwiches & Wraps',price:8.75,kcal:390,p:27,c:38,f:13,fiber:5,rating:5,img:'images/turkey-wrap.jpg',desc:'Turkey, crunchy vegetables and creamy herb spread.'},
+{id:'berry-smoothie',name:'Berry Power Smoothie',cat:'Smoothies & Drinks',price:5.25,kcal:240,p:12,c:34,f:6,fiber:7,rating:4,img:'images/berry-smoothie.jpg',desc:'Berries, banana, yogurt and oats.'},
+{id:'energy-bites',name:'Oat Energy Bites',cat:'Snacks',price:3.50,kcal:180,p:6,c:22,f:8,fiber:4,rating:5,img:'images/energy-bites.jpg',desc:'Oats, sunflower seed butter, dates and cocoa.'},
+{id:'rainbow-bowl',name:'Rainbow Power Bowl',cat:'Bowls',price:9.50,kcal:430,p:19,c:57,f:15,fiber:10,rating:5,img:'images/rainbow-bowl.jpg',desc:'Quinoa, chickpeas, roasted vegetables and tahini.'},
+{id:'apple-box',name:'Apple & Cheddar Snack Box',cat:'Snacks',price:4.25,kcal:220,p:9,c:27,f:9,fiber:5,rating:5,img:'images/apple-box.jpg',desc:'Apple, cheddar, whole-grain crackers and seeds.'},
+{id:'veggie-wrap',name:'Rainbow Veggie Wrap',cat:'Sandwiches & Wraps',price:8.25,kcal:360,p:14,c:47,f:13,fiber:8,rating:4,img:'images/veggie-wrap.jpg',desc:'Hummus, greens, peppers, carrot and cucumber.'}
+];
+
+let state=JSON.parse(localStorage.getItem('lunches_dunches_v5')||'null')||{
+profile:{},settings:{leadDays:7},selectedDay:0,plans:{},cart:{},orders:[],
+ingredients:[
+{id:'chicken',name:'Chicken Breast',storage:'Freezer',supplier:'',purchaseQty:5,purchaseUnit:'kg',purchasePrice:42,inventoryQty:2.5,inventoryUnit:'kg',notes:'',sortOrder:0},
+{id:'rice',name:'Long Grain Rice',storage:'Pantry',supplier:'',purchaseQty:10,purchaseUnit:'kg',purchasePrice:22,inventoryQty:7,inventoryUnit:'kg',notes:'',sortOrder:1},
+{id:'broccoli',name:'Broccoli',storage:'Fridge',supplier:'',purchaseQty:5,purchaseUnit:'kg',purchasePrice:18,inventoryQty:2,inventoryUnit:'kg',notes:'',sortOrder:2}
+],recipes:[],invoiceLog:[]
+};
+let activeCat='All',activeKitchen='ingredients';
+
+function save(){localStorage.setItem('lunches_dunches_v5',JSON.stringify(state));updateHome();renderPlanner();renderCart();renderOrders();renderKitchen();}
+function esc(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
+function money(n){return '$'+Number(n||0).toFixed(2);}
+function showPage(id){
+ document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+ document.getElementById(id).classList.add('active');
+ document.querySelectorAll('.bottom button').forEach(x=>x.classList.toggle('active',x.dataset.page===id));
+ if(id==='menu')renderMenu(); if(id==='planner')renderPlanner(); if(id==='cart')renderCart(); if(id==='orders')renderOrders(); if(id==='profile')loadProfile(); if(id==='kitchen')renderKitchen();
+ window.scrollTo(0,0);
+}
+document.querySelectorAll('.bottom button').forEach(b=>b.onclick=()=>showPage(b.dataset.page));
+document.getElementById('menuBtn').onclick=()=>showPage('menu');
+document.getElementById('cartBtn').onclick=()=>showPage('cart');
+
+function stars(n){return '★'.repeat(n)+'☆'.repeat(5-n);}
+function menuCard(m){
+ return `<div class="card menu-card">
+ <img class="menu-thumb" src="${esc(m.img)}" onerror="this.style.visibility='hidden'" alt="">
+ <div class="menu-info"><h3>${esc(m.name)}</h3><div class="menu-details">${money(m.price)} · ${m.kcal} kcal · P${m.p} C${m.c} F${m.f} · fiber ${m.fiber}g</div><div class="stars">${stars(m.rating)}</div>
+ <div class="actions"><button class="btn purple" onclick="addCart('${m.id}')">Add to Cart</button><button class="btn ghost" onclick="assignToDay('${m.id}')">Assign to Day</button></div></div></div>`;
+}
+function renderCategories(){document.getElementById('categoryChips').innerHTML=CATS.map(c=>`<button class="chip ${activeCat===c?'active':''}" onclick="setCat('${c.replace(/'/g,"\\'")}')">${c}</button>`).join('');}
+function setCat(c){activeCat=c;renderMenu();}
+function renderMenu(){renderCategories();const list=MENU.filter(m=>activeCat==='All'||m.cat===activeCat);document.getElementById('menuList').innerHTML=list.map(menuCard).join('')||'<div class="card">No meals in this category yet.</div>';}
+function renderQuick(){document.getElementById('quickMenu').innerHTML=MENU.slice(0,3).map(menuCard).join('');}
+
+function addCart(id){
+ state.cart[id]=(state.cart[id]||0)+1;save();toast('Added to cart');
+}
+function removeCart(id){delete state.cart[id];save();}
+function cartCount(){return Object.values(state.cart).reduce((a,b)=>a+Number(b),0);}
+function cartSubtotal(){return Object.entries(state.cart).reduce((s,[id,q])=>s+(MENU.find(m=>m.id===id)?.price||0)*q,0);}
+function renderCart(){
+ const el=document.getElementById('cartList'), entries=Object.entries(state.cart);
+ if(!entries.length){el.innerHTML='<div class="card">Your cart is empty. Pick some lunches from the menu.</div>';document.getElementById('cartTotal').textContent='$0.00';return;}
+ el.innerHTML=entries.map(([id,q])=>{const m=MENU.find(x=>x.id===id);return `<div class="card cartrow"><div><b>${esc(m.name)}</b><div class="small muted">${money(m.price)} each</div></div><div class="qty"><button onclick="changeQty('${id}',-1)">−</button><b>${q}</b><button onclick="changeQty('${id}',1)">+</button></div></div>`}).join('');
+ let sub=cartSubtotal(),count=cartCount(),discount=count>=5?.20:count>=3?.10:0,total=sub*(1-discount);
+ document.getElementById('cartTotal').textContent=money(total);document.getElementById('discountText').textContent=discount?`${discount*100}% multi-lunch discount applied.`:'Choose 3 lunches for 10% off or 5 for 20% off.';
+}
+function changeQty(id,n){state.cart[id]=(state.cart[id]||0)+n;if(state.cart[id]<=0)delete state.cart[id];save();}
+function clearCart(){state.cart={};save();}
+
+function assignToDay(id){
+ const day=state.selectedDay||0;state.plans[day]=id;save();showPage('planner');
+}
+function renderDays(){
+ document.getElementById('dayRow').innerHTML=DAYS.map((d,i)=>`<button class="day ${state.selectedDay===i?'active':''}" onclick="selectDay(${i})"><b>${d}</b><span class="small">${state.plans[i]? '🍱 planned':'+'}</span></button>`).join('');
+}
+function selectDay(i){state.selectedDay=i;save();}
+function renderPlanner(){
+ renderDays();const id=state.plans[state.selectedDay],m=MENU.find(x=>x.id===id);
+ document.getElementById('plannedDay').innerHTML=m?`<div class="planned"><b>${esc(m.name)}</b><br><span class="small muted">${m.kcal} kcal · P${m.p} · C${m.c} · F${m.f} · fiber ${m.fiber}g</span><br><button class="btn ghost" style="margin-top:7px" onclick="deletePlan()">Remove</button></div>`:'<div class="planned">Nothing planned yet. Tap “Add a meal to this day”.</div>';
+ const planned=Object.values(state.plans).map(id=>MENU.find(m=>m.id===id)).filter(Boolean);
+ document.getElementById('planCal').textContent=planned.reduce((s,m)=>s+m.kcal,0);
+ document.getElementById('planProtein').textContent=planned.reduce((s,m)=>s+m.p,0)+'g';
+ document.getElementById('planFiber').textContent=planned.reduce((s,m)=>s+m.fiber,0)+'g';
+}
+function deletePlan(){delete state.plans[state.selectedDay];save();}
+
+function checkout(){
+ const count=cartCount();if(!count)return toast('Add lunches first');
+ const lead=Number(state.settings.leadDays)||7;
+ const d=new Date();d.setDate(d.getDate()+lead);
+ const order={id:'LD-'+Date.now().toString(36).toUpperCase(),date:d.toISOString().slice(0,10),items:JSON.parse(JSON.stringify(state.cart)),status:'Ready for pickup',qr:'LD-'+Math.random().toString(36).slice(2,10).toUpperCase()};
+ state.orders.unshift(order);state.cart={};save();showPage('orders');toast('Order created');
+}
+function renderOrders(){
+ const el=document.getElementById('ordersList');if(!state.orders.length){el.innerHTML='<div class="card">No orders yet.</div>';return;}
+ el.innerHTML=state.orders.map(o=>`<div class="card"><div class="section-head"><h2>${esc(o.id)}</h2><span class="badge">${esc(o.status)}</span></div><p class="small muted">Pickup date: ${esc(o.date)}</p><div class="notice">📱 Scan this pickup code at the vending slot: <b>${esc(o.qr)}</b></div><div class="divider"></div>${Object.entries(o.items).map(([id,q])=>`<div class="small">${q} × ${esc(MENU.find(m=>m.id===id)?.name||id)}</div>`).join('')}</div>`).join('');
+}
+
+function loadProfile(){
+ const p=state.profile||{};['pName','cName','school','grade','age','height','weight','allergies'].forEach(k=>{if(document.getElementById(k))document.getElementById(k).value=p[k]||''});
+}
+function saveProfile(){state.profile={pName:pName.value,cName:cName.value,school:school.value,grade:grade.value,age:age.value,height:height.value,weight:weight.value,allergies:allergies.value};save();toast('Profile saved');}
+
+function saveSettings(){state.settings.leadDays=Math.max(1,Number(leadDays.value)||7);save();toast('Settings saved');}
+function updateHome(){
+ document.getElementById('homeMeals').textContent=Object.keys(state.plans).length;
+ document.getElementById('homeCart').textContent=cartCount();
+ document.getElementById('homeProtein').textContent=Object.values(state.plans).map(id=>MENU.find(m=>m.id===id)).filter(Boolean).reduce((s,m)=>s+m.p,0)+'g';
+}
+function toast(s){const t=document.createElement('div');t.textContent=s;t.style='position:fixed;left:50%;bottom:92px;transform:translateX(-50%);z-index:99;background:#17323b;color:#fff;padding:11px 16px;border-radius:999px;font-weight:800;font-size:13px';document.body.appendChild(t);setTimeout(()=>t.remove(),1800);}
+
+function kitchenTab(tab){activeKitchen=tab;renderKitchen();}
+function renderKitchen(){
+ ['kIngredients','kRecipes','kInventory','kInvoice'].forEach(id=>document.getElementById(id).classList.add('hidden'));
+ document.getElementById('k'+activeKitchen[0].toUpperCase()+activeKitchen.slice(1)).classList.remove('hidden');
+ if(activeKitchen==='ingredients')renderIngredients();if(activeKitchen==='recipes')renderRecipes();if(activeKitchen==='inventory')renderInventory();if(activeKitchen==='invoice')renderInvoice();
+}
+function unitFactor(u){return {g:1,kg:1000,oz:28.3495,lb:453.592,ml:1,L:1000,tsp:1,tbsp:3,cup:48,each:1,dozen:12}[u]||1;}
+function compatible(a,b){const mass=['g','kg','oz','lb'].includes(a)&&['g','kg','oz','lb'].includes(b);const vol=['ml','L','tsp','tbsp','cup'].includes(a)&&['ml','L','tsp','tbsp','cup'].includes(b);return a===b||mass||vol||((a==='each'||a==='dozen')&&(b==='each'||b==='dozen'));}
+function costFor(i,qty,unit){if(!compatible(unit,i.purchaseUnit))return null;const purchaseBase=Number(i.purchaseQty)||0;return purchaseBase?Number(i.purchasePrice||0)*(qty*unitFactor(unit))/(purchaseBase*unitFactor(i.purchaseUnit)):null;}
+function renderIngredients(){
+ const el=document.getElementById('kIngredients');
+ const arr=[...state.ingredients].sort((a,b)=>(Number(a.sortOrder)||0)-(Number(b.sortOrder)||0));
+ el.innerHTML=`<div class="section-head"><h2>Ingredients</h2><button class="btn" onclick="ingredientEditor()">+ Add</button></div>
+ <div class="sortbar"><input id="ingSearch" placeholder="Search ingredients" oninput="renderIngredients()"><select id="ingSort" onchange="renderIngredients()"><option value="custom">My saved order</option><option value="name">Name A–Z</option><option value="supplier">Supplier</option><option value="price">Purchase price</option></select></div>
+ <div id="ingredientList" class="drag-list"></div>`;
+ let list=arr,search=(document.getElementById('ingSearch')?.value||'').toLowerCase(),sort=document.getElementById('ingSort')?.value||'custom';
+ if(search)list=list.filter(i=>i.name.toLowerCase().includes(search));
+ if(sort==='name')list.sort((a,b)=>a.name.localeCompare(b.name));if(sort==='supplier')list.sort((a,b)=>(a.supplier||'').localeCompare(b.supplier||''));if(sort==='price')list.sort((a,b)=>(a.purchasePrice||0)-(b.purchasePrice||0));
+ document.getElementById('ingredientList').innerHTML=list.map(i=>`<div class="drag-item" draggable="true" data-id="${i.id}"><span class="handle">☷</span><div class="drag-main"><b>${esc(i.name)}</b><div class="small muted">${esc(i.storage)} · ${esc(i.purchaseQty)} ${esc(i.purchaseUnit)} · ${money(i.purchasePrice)} · on hand ${esc(i.inventoryQty||0)} ${esc(i.inventoryUnit||i.purchaseUnit)}</div></div><button class="btn ghost" onclick="ingredientEditor('${i.id}')">Edit</button></div>`).join('')||'<div class="muted">No ingredients yet.</div>';
+ enableDrag('ingredientList','ingredients');
+}
+function ingredientEditor(id){
+ const i=state.ingredients.find(x=>x.id===id)||{id:'',name:'',storage:'Pantry',supplier:'',purchaseQty:1,purchaseUnit:'kg',purchasePrice:0,inventoryQty:0,inventoryUnit:'kg',notes:''};
+ const html=`<div class="card form" id="ingEditor"><h2>${id?'Edit':'New'} ingredient</h2><label>Name<input id="ieName" value="${esc(i.name)}"></label><label>Storage<select id="ieStorage"><option>Pantry</option><option>Fridge</option><option>Freezer</option></select></label><label>Supplier<input id="ieSupplier" value="${esc(i.supplier)}"></label><div class="grid2"><label>Purchase qty<input id="iePQ" type="number" value="${i.purchaseQty}"></label><label>Purchase unit<select id="iePU">${['g','kg','oz','lb','ml','L','tsp','tbsp','cup','each','dozen'].map(u=>`<option ${i.purchaseUnit===u?'selected':''}>${u}</option>`).join('')}</select></label></div><label>Purchase price<input id="iePrice" type="number" step=".01" value="${i.purchasePrice}"></label><div class="grid2"><label>On hand<input id="ieIQ" type="number" value="${i.inventoryQty||0}"></label><label>Inventory unit<select id="ieIU">${['g','kg','oz','lb','ml','L','tsp','tbsp','cup','each','dozen'].map(u=>`<option ${(i.inventoryUnit||i.purchaseUnit)===u?'selected':''}>${u}</option>`).join('')}</select></label></div><label>Notes<textarea id="ieNotes">${esc(i.notes||'')}</textarea></label><div class="grid2"><button class="btn" onclick="saveIngredient('${id}')">Save</button><button class="btn ghost" onclick="document.getElementById('ingEditor')?.remove()">Cancel</button></div></div>`;
+ document.getElementById('kIngredients').insertAdjacentHTML('afterbegin',html);
+ document.getElementById('ieStorage').value=i.storage;
+}
+function saveIngredient(id){
+ const obj={id:id||'i-'+Date.now(),name:ieName.value.trim(),storage:ieStorage.value,supplier:ieSupplier.value.trim(),purchaseQty:Number(iePQ.value)||1,purchaseUnit:iePU.value,purchasePrice:Number(iePrice.value)||0,inventoryQty:Number(ieIQ.value)||0,inventoryUnit:ieIU.value,notes:ieNotes.value,sortOrder:id?(state.ingredients.find(x=>x.id===id)?.sortOrder||0):state.ingredients.length};
+ if(!obj.name)return toast('Enter an ingredient name');
+ const ix=state.ingredients.findIndex(x=>x.id===obj.id);if(ix>=0)state.ingredients[ix]=obj;else state.ingredients.push(obj);save();toast('Ingredient saved');
+}
+function enableDrag(listId,key){
+ const box=document.getElementById(listId);if(!box)return;let drag=null;
+ box.querySelectorAll('.drag-item').forEach(item=>{
+  item.addEventListener('dragstart',()=>{drag=item;item.classList.add('dragging')});
+  item.addEventListener('dragend',()=>{item.classList.remove('dragging');saveDragOrder(box,key)});
+  item.addEventListener('dragover',e=>{e.preventDefault();const target=item;if(!drag||target===drag)return;const r=target.getBoundingClientRect();box.insertBefore(drag,e.clientY<r.top+r.height/2?target:target.nextSibling)});
+ });
+}
+function saveDragOrder(box,key){[...box.children].forEach((el,n)=>{const id=el.dataset.id,arr=state[key];const x=arr.find(a=>a.id===id);if(x)x.sortOrder=n});save();}
+function renderRecipes(){
+ const el=document.getElementById('kRecipes');
+ el.innerHTML=`<div class="section-head"><h2>Recipes & Costing</h2><button class="btn" onclick="recipeEditor()">+ Recipe</button></div>
+ <div class="notice">Import recipe text/files into ingredients, then cost portions automatically.</div><div id="recipeList"></div>`;
+ el.querySelector('#recipeList').innerHTML=(state.recipes||[]).map(r=>{const c=recipeCost(r);return `<div class="card" style="padding:12px"><div class="section-head"><b>${esc(r.name)}</b><span class="badge">${money(c.per)} / portion</span></div><div class="small muted">${esc(r.category||'General')} · yield ${r.yieldQty} ${esc(r.yieldUnit||'portion')} · sell ${money(c.sell)} · food cost ${c.foodCost.toFixed(1)}%</div><div class="actions" style="margin-top:8px"><button class="btn ghost" onclick="recipeEditor('${r.id}')">Edit</button><button class="btn danger" onclick="deleteRecipe('${r.id}')">Delete</button></div></div>`}).join('')||'<div class="muted">No recipes yet.</div>';
+}
+function recipeCost(r){
+ let total=0;for(const x of r.ingredients||[]){const i=state.ingredients.find(z=>z.id===x.ingredientId);if(i){const c=costFor(i,Number(x.qty)||0,x.unit);if(c!=null)total+=c;}}
+ const portions=Math.max(1,Number(r.yieldQty)||1),per=total/portions;
+ let sell=r.pricingMode==='food'&&Number(r.targetFoodCost)>0?per/(Number(r.targetFoodCost)/100):per*(1+Number(r.markup||0)/100);
+ return {total,per,sell,foodCost:sell?per/sell*100:0};
+}
+function recipeEditor(id){
+ const r=state.recipes.find(x=>x.id===id)||{name:'',category:'Lunch',yieldQty:10,yieldUnit:'portion',markup:100,targetFoodCost:40,ingredients:[],instructions:''};
+ const rows=r.ingredients||[];
+ const box=document.createElement('div');box.className='card form';box.id='recipeEditor';box.innerHTML=`<h2>${id?'Edit':'New'} recipe</h2><label>Name<input id="reName" value="${esc(r.name)}"></label><label>Category<input id="reCat" value="${esc(r.category||'Lunch')}"></label><div class="grid2"><label>Total yield<input id="reYield" type="number" value="${r.yieldQty||1}"></label><label>Yield unit<input id="reUnit" value="${esc(r.yieldUnit||'portion')}"></label></div><label>Pricing<select id="reMode"><option value="markup">Markup %</option><option value="food">Target food cost %</option></select></label><label>Value<input id="reValue" type="number" value="${r.pricingMode==='food'?r.targetFoodCost:r.markup}"></label><label>Instructions<textarea id="reInst">${esc(r.instructions||'')}</textarea></label><h3>Ingredients</h3><div id="recipeRows"></div><button class="btn ghost full" onclick="addRecipeRow()">+ Add ingredient</button><div class="grid2" style="margin-top:10px"><button class="btn" onclick="saveRecipe('${id||''}')">Save recipe</button><button class="btn ghost" onclick="document.getElementById('recipeEditor')?.remove()">Cancel</button></div>`;
+ document.getElementById('kRecipes').prepend(box);document.getElementById('reMode').value=r.pricingMode||'markup';box._rows=rows.map(x=>({...x}));renderRecipeRows();
+}
+function renderRecipeRows(){const box=document.getElementById('recipeEditor'),out=document.getElementById('recipeRows');if(!box||!out)return;out.innerHTML=(box._rows||[]).map((x,n)=>`<div class="card" style="padding:9px"><select onchange="recipeRowChange(${n},this.value)">${state.ingredients.map(i=>`<option value="${i.id}" ${i.id===x.ingredientId?'selected':''}>${esc(i.name)}</option>`).join('')}</select><div class="grid2"><input type="number" value="${x.qty||1}" oninput="recipeQtyChange(${n},this.value)" placeholder="Qty"><select onchange="recipeUnitChange(${n},this.value)">${['g','kg','oz','lb','ml','L','tsp','tbsp','cup','each','dozen'].map(u=>`<option ${u===x.unit?'selected':''}>${u}</option>`).join('')}</select></div><button class="btn danger full" onclick="removeRecipeRow(${n})">Remove</button></div>`).join('');}
+function addRecipeRow(){const box=document.getElementById('recipeEditor');box._rows.push({ingredientId:state.ingredients[0]?.id||'',qty:1,unit:state.ingredients[0]?.purchaseUnit||'each'});renderRecipeRows();}
+function recipeRowChange(n,v){document.getElementById('recipeEditor')._rows[n].ingredientId=v}
+function recipeQtyChange(n,v){document.getElementById('recipeEditor')._rows[n].qty=Number(v)||0}
+function recipeUnitChange(n,v){document.getElementById('recipeEditor')._rows[n].unit=v}
+function removeRecipeRow(n){document.getElementById('recipeEditor')._rows.splice(n,1);renderRecipeRows();}
+function saveRecipe(id){
+ const box=document.getElementById('recipeEditor');const r={id:id||'r-'+Date.now(),name:reName.value.trim(),category:reCat.value,yieldQty:Number(reYield.value)||1,yieldUnit:reUnit.value||'portion',pricingMode:reMode.value,markup:reMode.value==='markup'?Number(reValue.value)||0:0,targetFoodCost:reMode.value==='food'?Number(reValue.value)||0:0,instructions:reInst.value,ingredients:box._rows||[]};
+ if(!r.name)return toast('Enter a recipe name');const ix=state.recipes.findIndex(x=>x.id===r.id);if(ix>=0)state.recipes[ix]=r;else state.recipes.push(r);save();toast('Recipe saved');
+}
+function deleteRecipe(id){if(confirm('Delete this recipe?')){state.recipes=state.recipes.filter(r=>r.id!==id);save();}}
+function renderInventory(){
+ const el=document.getElementById('kInventory'),arr=[...state.ingredients].sort((a,b)=>(a.sortOrder||0)-(b.sortOrder||0));
+ const total=arr.reduce((s,i)=>s+((Number(i.inventoryQty)||0)*((Number(i.purchasePrice)||0)/(Number(i.purchaseQty)||1))*unitFactor(i.inventoryUnit||i.purchaseUnit)/unitFactor(i.purchaseUnit)),0);
+ el.innerHTML=`<div class="section-head"><h2>Inventory</h2><button class="btn" onclick="renderIngredientsAndEdit()">Manage</button></div><div class="grid3"><div class="kpi"><b>${arr.length}</b><span>items</span></div><div class="kpi"><b>${money(total)}</b><span>inventory value</span></div><div class="kpi"><b>${arr.filter(i=>(i.inventoryQty||0)<=0).length}</b><span>out / low</span></div></div><div class="tablewrap" style="margin-top:10px"><table class="table"><tr><th>Ingredient</th><th>Storage</th><th>On hand</th><th>Value</th></tr>${arr.map(i=>{const val=(Number(i.inventoryQty)||0)*((Number(i.purchasePrice)||0)/(Number(i.purchaseQty)||1))*unitFactor(i.inventoryUnit||i.purchaseUnit)/unitFactor(i.purchaseUnit);return `<tr><td>${esc(i.name)}</td><td>${esc(i.storage)}</td><td>${i.inventoryQty||0} ${esc(i.inventoryUnit||i.purchaseUnit)}</td><td>${money(val)}</td></tr>`}).join('')}</table></div>`;
+}
+function renderIngredientsAndEdit(){activeKitchen='ingredients';renderKitchen();setTimeout(()=>ingredientEditor(),50);}
+function renderInvoice(){
+ document.getElementById('kInvoice').innerHTML=`<h2>Invoice Scanner</h2><p class="small muted">Take a photo or choose an invoice. OCR is handled in the browser when the optional Tesseract library loads.</p><input id="invoiceFile" type="file" accept="image/*,.pdf,.docx"><button class="btn full" style="margin-top:8px" onclick="scanInvoice()">Scan invoice</button><div id="invoiceStatus" class="notice" style="margin-top:10px">No invoice scanned.</div><div id="invoiceOutput"></div>`;
+}
+async function scanInvoice(){
+ const f=document.getElementById('invoiceFile').files[0];if(!f)return toast('Choose an invoice first');
+ const status=document.getElementById('invoiceStatus');status.textContent='Reading invoice…';
+ try{
+  if(f.type.startsWith('image/')||f.name.match(/\.(png|jpg|jpeg|webp)$/i)){
+   const script=await loadScript('https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js');
+   if(!window.Tesseract)throw new Error('OCR library did not load.');
+   const r=await Tesseract.recognize(f,'eng',{logger:m=>{if(m.status)status.textContent=m.status+' '+Math.round((m.progress||0)*100)+'%'}});
+   const text=r.data.text||'';document.getElementById('invoiceOutput').innerHTML='<div class="card"><b>OCR text</b><pre style="white-space:pre-wrap;font-size:11px">'+esc(text)+'</pre><button class="btn" onclick="invoiceQuickAdd()">Quick add visible prices</button></div>';window.lastOCR=text;status.textContent='Scan complete.';
+  }else throw new Error('For best GitHub Pages reliability, use an image invoice in this version.');
+ }catch(e){status.textContent=e.message;}
+}
+function invoiceQuickAdd(){
+ const lines=String(window.lastOCR||'').split(/\n/);let added=0;
+ for(const line of lines){const m=line.match(/^(.{3,50})\s+\$?(\d+\.\d{2})\s*$/);if(!m)continue;const name=m[1].replace(/[^A-Za-z0-9 &()'-]/g,'').trim();const price=Number(m[2]);if(!name||!price)continue;state.ingredients.push({id:'i-'+Date.now()+added,name,storage:'Pantry',supplier:'Invoice import',purchaseQty:1,purchaseUnit:'each',purchasePrice:price,inventoryQty:0,inventoryUnit:'each',notes:'Imported from invoice',sortOrder:state.ingredients.length});added++;}
+ save();toast(added+' ingredients imported');
+}
+function loadScript(src){return new Promise((res,rej)=>{if([...document.scripts].some(s=>s.src===src))return res();const s=document.createElement('script');s.src=src;s.onload=res;s.onerror=()=>rej(new Error('Could not load OCR library'));document.head.appendChild(s);});}
+
+function exportBackup(){
+ const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='lunches-dunches-backup.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+}
+document.getElementById('backupFile').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const x=JSON.parse(r.result);state={...state,...x};save();toast('Backup imported')}catch(err){toast('Invalid backup')}};r.readAsText(f)};
+
+function deleteAllData(){if(confirm('Delete all Lunches Dunches data on this device?')){localStorage.removeItem('lunches_dunches_v5');location.reload();}}
+
+function openBuddy(seed){
+ document.getElementById('buddyPanel').classList.remove('hidden');if(seed)sendBuddy(seed);
+}
+function buddyReply(q){
+ const t=q.toLowerCase(),planned=Object.values(state.plans).map(id=>MENU.find(m=>m.id===id)).filter(Boolean);
+ if(/choose|lunch|meal/.test(t)){
+  const allergy=String(state.profile.allergies||'').toLowerCase();
+  const safe=MENU.filter(m=>!allergy||!((allergy.includes('dairy')&&/cheese|yogurt/i.test(m.desc+' '+m.name))||(allergy.includes('peanut')&&/peanut|nut/i.test(m.desc+' '+m.name))));
+  const pick=[...safe].sort((a,b)=>(b.p+b.fiber)-(a.p+a.fiber))[0];
+  return `I'd pick ${pick.name} for a balanced option: ${pick.kcal} kcal, ${pick.p}g protein and ${pick.fiber}g fiber.`;
+ }
+ if(/macro|protein|calorie|nutrition/.test(t))return `Your current weekly plan has ${planned.reduce((s,m)=>s+m.kcal,0)} kcal, ${planned.reduce((s,m)=>s+m.p,0)}g protein and ${planned.reduce((s,m)=>s+m.fiber,0)}g fiber across ${planned.length} planned lunches.`;
+ if(/cost|pricing|food cost|recipe/.test(t)){
+  const recipes=state.recipes||[];if(!recipes.length)return 'You have no recipes yet. Open Kitchen → Recipes and add one. I can then calculate recipe cost, portion cost, selling price and food-cost %.';
+  const r=recipes[0],c=recipeCost(r);return `${r.name}: ${money(c.per)} cost per portion, suggested sell price ${money(c.sell)}, food cost ${c.foodCost.toFixed(1)}%.`;
+ }
+ if(/inventory|stock|ingredient/.test(t)){
+  const low=state.ingredients.filter(i=>(Number(i.inventoryQty)||0)<=0).slice(0,5);return low.length?`Your first low/out-of-stock items are: ${low.map(x=>x.name).join(', ')}. Open Kitchen → Ingredients to update them.`:`Inventory looks good based on the quantities entered.`;
+ }
+ if(/cart|order/.test(t))return `You have ${cartCount()} lunches in the cart. ${cartCount()>=5?'The 20% five-lunch discount applies.':cartCount()>=3?'The 10% three-lunch discount applies.':'Add 3 or more lunches for a discount.'}`;
+ return `I can help with meal choices, macros, allergies, weekly planning, recipe costing, ingredient pricing, inventory and orders. Try “choose a high-protein lunch” or “what is my food cost?”`;
+}
+function addBuddyMsg(text,who){const d=document.createElement('div');d.className='msg '+who;d.textContent=text;document.getElementById('buddyMessages').appendChild(d);document.getElementById('buddyMessages').scrollTop=999999;}
+function sendBuddy(q){if(!q)return;addBuddyMsg(q,'me');setTimeout(()=>addBuddyMsg(buddyReply(q),'bot'),120);}
+function sendBuddyInput(){const i=document.getElementById('buddyInput'),q=i.value.trim();if(!q)return;i.value='';sendBuddy(q);}
+document.getElementById('buddyFab').onclick=()=>document.getElementById('buddyPanel').classList.toggle('hidden');
+document.getElementById('buddyClose').onclick=()=>document.getElementById('buddyPanel').classList.add('hidden');
+document.getElementById('buddySend').onclick=sendBuddyInput;document.getElementById('buddyInput').onkeydown=e=>{if(e.key==='Enter')sendBuddyInput();};
+function openBuddySeed(){openBuddy('');}
+window.openBuddy=openBuddy;
+
+renderQuick();renderMenu();renderPlanner();renderCart();renderOrders();updateHome();loadProfile();
+document.getElementById('leadDays').value=state.settings.leadDays||7;
+document.getElementById('buddyMessages').innerHTML='<div class="msg bot">Hi! I’m Chef Buddy. I can help with lunches, macros, planning, recipes, costing, inventory and orders.</div>';
+</script>
+</body>
+</html>
